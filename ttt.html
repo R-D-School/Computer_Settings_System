@@ -14,6 +14,22 @@
 <title>Sidebar Tabs</title>
 <style>
 
+    @media (max-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+
+  .sidebar {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  button {
+    min-height: 44px; /* Apple touch target rule */
+  }
+}
 
 #bottle {
   width: 50px;
@@ -256,4 +272,5 @@ function showTab(tabId) {
 }
 </script>
 </body>
+
 </html>
