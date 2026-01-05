@@ -1,20 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOME</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sidebar Tabs</title>
-
 <style>
+
+
+#bottle {
+  width: 50px;
+  height: 300px;
+  border: 2px solid black;
+  position: relative;
+  background: lightgray;
+  overflow: hidden;
+  transition: background-color 0.3s linear;
+}
+
+#fill {
+  width: 100%;
+  height: 0%; /* empty initially */
+  background: blue;
+  position: absolute;
+  bottom: 0;
+  transition: height 0.5s linear;
+}
+
+#percentText {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: bold;
+  color: white;
+  pointer-events: none;
+}
+
+
+#eye {
+  width: 50px;
+  height: 30px;
+  background: black;
+  clip-path: ellipse(50% 50% at 50% 50%);
+}
+
+#falloutHead {
+  width: 100px;
+  height: 120px;
+  background-color: gray;
+  clip-path: polygon(
+    50% 0%, 80% 10%, 90% 40%, 80% 80%, 50% 100%, 20% 80%, 10% 40%, 20% 10%
+  );
+  cursor: pointer;
+}
+
+      .shape {
+    width: 100px;
+    height: 100px;
+    margin: 20px;
+    display: inline-block;
+    border: 2px solid #000;
+    cursor: pointer;
+  }
+
+  /* Basic body parts shapes */
+  #head {
+    border-radius: 50%; /* circle for head */
+    background-color: gray;
+  }
+
+  #torso {
+    border-radius: 10px; /* rectangle for torso */
+    background-color: gray;
+  }
+
+
+ #dragBox {
+    width: 150px;
+    height: 100px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    position: absolute; /* Required for moving */
+    top: 500px;
+    left: 500px;
+    cursor: grab;
+    user-select: none;
+  }
+
+body {
+  display: flex;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 150px;
+  background-color: #f0f0f0;
+  padding: 10px;
+  box-sizing: border-box;
+  border-right: 1px solid #ccc;
+}
+
+.sidebar button {
+  display: block;
+  width: 100%;
+  margin-bottom: 5px;
+  padding: 10px;
+  border: none;
+  background-color: #eee;
+  cursor: pointer;
+  text-align: left;
+}
+
+.sidebar button.active {
+  background-color: #ddd;
+  font-weight: bold;
+}
+
+/* Content area */
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
 </style>
 </head>
-
 <body>
-<p>test</p>
+
+
+<div class="sidebar">
+  <button onclick="showTab('home')" class="active">Home</button>
+  <button onclick="showTab('system')">System</button>
+  <button onclick="showTab('network')">Network</button>
+  <button onclick="showTab('about')">About</button>
+</div>
+
+<div class="content">
+  <div id="home" class="tab-content active">
+    <h2>Home</h2>
+    <div id="dragBox">Drag me!</div>
+    <p>Welcome to the settings menu!</p>
+  </div>
+  <div id="system" class="tab-content">
+    <h2>System Settings</h2>
+  <div id="bottle">
+  <div id="fill"></div>
+  <div id="percentText"></div>
+</div>
+
+
+    <div id="eye"></div>
+<button id="blueButton">Make Blue</button>
+<button id="redButton">Make Red</button>
+    <div id="Head" class="shape"></div>
+    <div id="torso" class="shape"></div>
+    <div id="falloutHead" class="shape"></div>
+    <div id="eye" class="shape"></div>
+
+    <p>CPU usage, memory, updates, etc.</p>
+    <label>Toggle feature:
+      <input type="checkbox">
+    </label>
+  </div>
+  <div id="network" class="tab-content">
+    <h2>Network Settings</h2>
+    <p>Wi-Fi, Ethernet, VPN, etc.</p>
+    <label>Wi-Fi SSID:
+      <input type="text" placeholder="Network name">
+    </label>
+  </div>
+  <div id="about" class="tab-content">
+    <h2>About</h2>
+    <p>Version, credits, legal info.</p>
+  </div>
+</div>
 
 <script>
-</script>
 
+
+const fill = document.getElementById('fill');
+const percentText = document.getElementById('percentText');
+
+const eye = document.getElementById('eye');
+
+document.getElementById('blueButton').addEventListener('click', () => {
+  eye.style.backgroundColor = 'blue';
+});
+
+document.getElementById('redButton').addEventListener('click', () => {
+  eye.style.backgroundColor = 'red';
+});
+
+
+
+
+const colors = ['gray', 'green', 'yellow', 'orange', 'red']; // gray at end to restart
+
+document.querySelectorAll('.shape').forEach(shape => {
+  shape.addEventListener('click', () => {
+    // Get current color
+    let currentColor = shape.style.backgroundColor;
+    // Find next color
+    let nextIndex = (colors.indexOf(currentColor) + 1) % colors.length;
+    shape.style.backgroundColor = colors[nextIndex];
+  });
+});
+
+const box = document.getElementById('dragBox');
+let offsetX, offsetY;
+let isDragging = false;
+
+box.addEventListener('mousedown', (e) => {
+  isDragging = true;
+  offsetX = e.clientX - box.offsetLeft;
+  offsetY = e.clientY - box.offsetTop;
+  box.style.cursor = 'grabbing';
+});
+
+document.addEventListener('mouseup', () => {
+  isDragging = false;
+  box.style.cursor = 'grab';
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (!isDragging) return;
+  box.style.left = `${e.clientX - offsetX}px`;
+  box.style.top = `${e.clientY - offsetY}px`;
+});
+
+function showTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+  document.querySelectorAll('.sidebar button').forEach(btn => btn.classList.remove('active'));
+  
+  document.getElementById(tabId).classList.add('active');
+  document.querySelector(`.sidebar button[onclick="showTab('${tabId}')"]`).classList.add('active');
+}
+</script>
 </body>
 </html>
-
