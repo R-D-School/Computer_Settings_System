@@ -34,6 +34,13 @@
     <section id="home" class="panel active" data-label="Home">
       <h2>Home</h2>
       <p class="muted">Main dashboard.</p>
+      <div id="Name_current">
+
+      </div>
+      <div id="Name">
+<span class="tooltip" data-tooltip="Google-style info">
+  Hover over me
+</span>      </div>
               <div id="ClockT">Model R start up was <span id="StartClock"></span> ago</div>
         <div id="ClockT">Last Updated <span id="AClock"></span> ago</div>
     </section>
@@ -83,6 +90,8 @@
   <input type="datetime-local" id="startTimeInput" value="2025-09-30T00:00">
   <button id="applyStartTime">Apply start time (reset to full at this moment)</button>
 </div>
+    </section>
+
 
     <!-- SYSTEM > advanced -->
     <section id="" class="panel"
@@ -95,6 +104,8 @@
   <input type="datetime-local" id="startTimeInput" value="2025-09-30T00:00">
   <button id="applyStartTime">Apply start time (reset to full at this moment)</button>
 </div>
+    </section>
+
 
     <!-- SYSTEM > alldesplay -->
     <section id="display-alldesplay" class="panel"
@@ -243,8 +254,6 @@
 
 
 
-
-
 <div>
     <!-- SYSTEM > STATUS -->
     <section id="system-status" class="panel"
@@ -293,15 +302,14 @@
 
 /* --CONFIG-- */
 const startDate = new Date("2003-06-02T01:00:00"); 
-const ADate = new Date("2016-12-30T00:00:00");
+const UpdateDate = new Date("2016-12-30T00:00:00");
 const breadcrumbsEl = document.getElementById("breadcrumbs")
 
 const STORAGE_KEY = 'water_tracker_state_v1';
 const dailyGoal = 3000; // mL (15 Cups)
 const minutesPerDay = 1; //change to 1440
 const decrementPerMinute = dailyGoal / minutesPerDay; // mL lost per minute (spread across 24h)
-const saveIntervalMs = 1000; // tick every second (was 60*1000)
-;
+const saveIntervalMs = 1000; // tick every second (was 60*1000);
 
 
 /* --DOM-- */
@@ -321,6 +329,7 @@ const applyStartBtn = document.getElementById('applyStartTime');
 /* --STATE-- */
 let totalConsumed = 0; // mL
 let lastTimestamp = new Date().toISOString(); // ISO string
+
 
 
 /* --Helpers-- */
@@ -547,7 +556,7 @@ navigateTo("home");
 /* CLOCK */
 function Clock() {
   document.getElementById("StartClock").textContent = formatDiff(startDate);
-  document.getElementById("AClock").textContent = formatDiff(ADate);
+  document.getElementById("AClock").textContent = formatDiff(UpdateDate);
 }
 setInterval(Clock, 1000);
 Clock();
@@ -569,6 +578,5 @@ function formatDiff(startDate) {
 
   return `${years}y ${months}mo ${days}d ${hours}h ${minutes}m ${seconds}s`;
 }
-
 
 </script>
